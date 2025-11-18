@@ -1,4 +1,4 @@
-package io.github.leobeaumont.Nodes;
+package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes;
 
 public class Node {
     /**

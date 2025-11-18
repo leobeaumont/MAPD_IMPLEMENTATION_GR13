@@ -1,4 +1,4 @@
-package io.github.leobeaumont.Nodes;
+package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes;
 
 /**
  * Represents a place in a Petri net, used to store and manage tokens.

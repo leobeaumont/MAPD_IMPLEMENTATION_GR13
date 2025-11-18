@@ -1,7 +1,7 @@
 package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges;
 
-import io.github.leobeaumont.Nodes.Place;
-import io.github.leobeaumont.Nodes.Transition;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Place;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Transition;
 
 /**
  * Represents an outgoing edge with a specified weight.

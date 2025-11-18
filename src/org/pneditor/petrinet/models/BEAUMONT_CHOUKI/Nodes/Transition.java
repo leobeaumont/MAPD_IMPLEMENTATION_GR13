@@ -1,12 +1,12 @@
-package io.github.leobeaumont.Nodes;
+package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import io.github.leobeaumont.Edges.Edge;
-import io.github.leobeaumont.Edges.EdgeIn;
-import io.github.leobeaumont.Edges.EdgeOut;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.Edge;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeIn;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeOut;
 
 /**
  * Represents a transition in a Petri net, responsible for moving tokens

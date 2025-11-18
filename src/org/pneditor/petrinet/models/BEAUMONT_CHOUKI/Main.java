@@ -1,9 +1,9 @@
-package io.github.leobeaumont;
+package org.pneditor.petrinet.models.BEAUMONT_CHOUKI;
 
-import io.github.leobeaumont.Nodes.Place;
-import io.github.leobeaumont.Nodes.Transition;
-import io.github.leobeaumont.PetriNET.PetriNet1;
-import io.github.leobeaumont.PetriNET.PetriNet2;    
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Place;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Transition;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.PetriNET.PetriNet1;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.PetriNET.PetriNet2;    
 
 /**
  * Entry point for simulating a simple Petri net.

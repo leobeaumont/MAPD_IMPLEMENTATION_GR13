@@ -1,4 +1,4 @@
-package io.github.leobeaumont.PetriNET;
+package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.PetriNET;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -6,16 +6,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import io.github.leobeaumont.Edges.Edge;
-import io.github.leobeaumont.Edges.EdgeEmpty;
-import io.github.leobeaumont.Edges.EdgeIn;
-import io.github.leobeaumont.Edges.EdgeOut;
-import io.github.leobeaumont.Edges.EdgeZero;
-import io.github.leobeaumont.Edges.WeightedEdgeIn;
-import io.github.leobeaumont.Edges.WeightedEdgeOut;
-import io.github.leobeaumont.Nodes.Node;
-import io.github.leobeaumont.Nodes.Place;
-import io.github.leobeaumont.Nodes.Transition;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.Edge;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeEmpty;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeIn;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeOut;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeZero;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.WeightedEdgeIn;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.WeightedEdgeOut;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Node;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Place;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Transition;
 
 
 /**
