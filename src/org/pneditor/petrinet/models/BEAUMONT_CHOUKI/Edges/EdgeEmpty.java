@@ -1,4 +1,7 @@
-package io.github.leobeaumont;
+package io.github.leobeaumont.Edges;
+
+import io.github.leobeaumont.Nodes.Place;
+import io.github.leobeaumont.Nodes.Transition;
 
 /**
  * Represents an incoming edge that empties its origin {@link Place} upon activation.

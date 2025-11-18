@@ -1,14 +1,18 @@
-package io.github.leobeaumont;
+package io.github.leobeaumont.Nodes;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import io.github.leobeaumont.Edges.Edge;
+import io.github.leobeaumont.Edges.EdgeIn;
+import io.github.leobeaumont.Edges.EdgeOut;
+
 /**
  * Represents a transition in a Petri net, responsible for moving tokens
  * from input places to output places via edges.
  */
-public class Transition {
+public class Transition extends Node {
 
     private List<EdgeIn> edgesIn;
     private List<EdgeOut> edgesOut;

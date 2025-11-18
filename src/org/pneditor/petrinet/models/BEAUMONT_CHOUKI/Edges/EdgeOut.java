@@ -1,4 +1,7 @@
-package io.github.leobeaumont;
+package io.github.leobeaumont.Edges;
+
+import io.github.leobeaumont.Nodes.Place;
+import io.github.leobeaumont.Nodes.Transition;
 
 /**
  * Represents an abstract outgoing edge connecting a {@link Transition} to a {@link Place}.

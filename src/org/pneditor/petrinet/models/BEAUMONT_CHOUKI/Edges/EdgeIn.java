@@ -1,4 +1,7 @@
-package io.github.leobeaumont;
+package io.github.leobeaumont.Edges;
+
+import io.github.leobeaumont.Nodes.Place;
+import io.github.leobeaumont.Nodes.Transition;
 
 /**
  * Represents an abstract incoming edge connecting a {@link Place} to a {@link Transition}.
@@ -22,6 +25,7 @@ public abstract class EdgeIn extends Edge {
     public EdgeIn(Place origin, Transition arrival) {
         this.setOrigin(origin);
         this.setArrival(arrival);
+        
     }
 
     /**

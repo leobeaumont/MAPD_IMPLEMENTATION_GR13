@@ -1,4 +1,4 @@
-package io.github.leobeaumont;
+package io.github.leobeaumont.Nodes;
 
 /**
  * Represents a place in a Petri net, used to store and manage tokens.
@@ -7,7 +7,7 @@ package io.github.leobeaumont;
  * methods to add or remove tokens safely.
  * </p>
  */
-public class Place {
+public class Place extends Node {
 
     private int nbTokens;
 

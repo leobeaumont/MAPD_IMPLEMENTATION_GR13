@@ -1,4 +1,7 @@
-package io.github.leobeaumont;
+package io.github.leobeaumont.Edges;
+
+import io.github.leobeaumont.Nodes.Place;
+import io.github.leobeaumont.Nodes.Transition;
 
 /**
  * Represents an outgoing edge with a specified weight.

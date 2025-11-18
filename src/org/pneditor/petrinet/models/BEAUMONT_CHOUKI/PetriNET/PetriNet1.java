@@ -1,9 +1,22 @@
-package io.github.leobeaumont;
+package io.github.leobeaumont.PetriNET;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+
+import io.github.leobeaumont.Edges.Edge;
+import io.github.leobeaumont.Edges.EdgeEmpty;
+import io.github.leobeaumont.Edges.EdgeIn;
+import io.github.leobeaumont.Edges.EdgeOut;
+import io.github.leobeaumont.Edges.EdgeZero;
+import io.github.leobeaumont.Edges.WeightedEdgeIn;
+import io.github.leobeaumont.Edges.WeightedEdgeOut;
+import io.github.leobeaumont.Nodes.Node;
+import io.github.leobeaumont.Nodes.Place;
+import io.github.leobeaumont.Nodes.Transition;
+
 
 /**
  * Represents a Petri net system composed of places, transitions, and edges.
@@ -20,11 +33,11 @@ import java.util.Random;
  *
  * <p>Supported edge types include {@link WeightedEdgeIn}, {@link WeightedEdgeOut},
  * {@link EdgeEmpty}, and {@link EdgeZero}.</p>
- *
+ * 
  * @author
  *     leobeaumont
  */
-public class PetriNet implements IPretriNet {
+public class PetriNet1 implements IPretriNet {  // This version allows users to add duplicate edges and will notify him at the simulation that the Petri net is not valid.
 
     private List<Edge> edges;
     private List<Place> places;
@@ -35,7 +48,7 @@ public class PetriNet implements IPretriNet {
      * <p>Uses {@link ArrayList} for internal collections since it provides
      * efficient iteration and insertion at the end, which suits typical Petri net usage.</p>
      */
-    public PetriNet() {
+    public PetriNet1() {
         /* ArrayList is faster/memory effficient in this case because:
         - We won't remove elements often from the middle of the list.
         - Most of the time we iterate through the list.
@@ -248,6 +261,11 @@ public class PetriNet implements IPretriNet {
      * @return {@code true} if the Petri net is valid, {@code false} otherwise
      */
     public boolean isValid() {
+        // Two edges can't have the same origin and arrival
+        if (this.hasDuplicateEdges()) {
+            return false;
+        }
+
         // A transition must have at least one edge connected
         Iterator<Transition> iterTransitions = this.transitions.iterator();
         while (iterTransitions.hasNext()) {
@@ -316,9 +334,18 @@ public class PetriNet implements IPretriNet {
      * @param steps the number of steps to simulate
      */
     public void launchSimulation(int steps) {
+        if (!isValid()) {
+            throw new IllegalStateException("PetriNet.launchSimulation(steps) -- The Petri net is not valid.");
+        }
         for (int i = 0; i < steps; ++i) {
             // Get every drawable transition
             List<Transition> drawable = this.drawable();
+
+            // If no transition can be fired, stop the simulation
+            if (drawable.isEmpty()) {
+                System.out.println("No drawable transitions available. Stopping simulation.");
+                return;
+            }
 
             // Select a drawable transition at random
             Random random = new Random();
@@ -328,6 +355,45 @@ public class PetriNet implements IPretriNet {
             this.stepSimulation(randomTransition);
         }
     }
+
+    /**
+     * Checks whether there exist duplicate edges among input and output edges:
+     * <ul>
+     *   <li>Two {@link EdgeIn} edges with the same origin {@link Place} and the same arrival {@link Transition}</li>
+     *   <li>Two {@link EdgeOut} edges with the same origin {@link Transition} and the same arrival {@link Place}</li>
+     * </ul>
+     *
+     * @return {@code true} if at least one duplicate input or output edge exists,
+     *         {@code false} otherwise
+     */
+    public boolean hasDuplicateEdges() {
+        java.util.HashSet<EdgeKey> seenInputs = new java.util.HashSet<>();
+        java.util.HashSet<EdgeKey> seenOutputs = new java.util.HashSet<>();
+
+        for (Edge edge : edges) {
+            if (edge instanceof EdgeIn) {
+                EdgeIn eIn = (EdgeIn) edge;
+                EdgeKey key = new EdgeKey(eIn.getOrigin(), eIn.getArrival());
+
+                // If add() returns false, this (origin, arrival) pair already exists for an input edge
+                if (!seenInputs.add(key)) {
+                    return true;
+                }
+
+            } else if (edge instanceof EdgeOut) {
+                EdgeOut eOut = (EdgeOut) edge;
+                EdgeKey key = new EdgeKey(eOut.getOrigin(), eOut.getArrival());
+
+                // If add() returns false, this (origin, arrival) pair already exists for an output edge
+                if (!seenOutputs.add(key)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 
     /**
      * Returns the list of edges in the Petri net.
@@ -381,5 +447,47 @@ public class PetriNet implements IPretriNet {
      */
     public void setTransitions(List<Transition> transitions) {
         this.transitions = transitions;
+    }
+
+     /**
+     * Internal key representing a pair (origin, arrival) of nodes.
+     * <p>
+     * This class is used to detect duplicate edges efficiently by storing
+     * keys in a {@link HashSet}. Two {@code EdgeKey} instances are considered
+     * equal if and only if both their origin and arrival nodes are equal.
+     * </p>
+     */
+    private static final class EdgeKey {
+
+        private final Node origin;
+        private final Node arrival;
+
+        /**
+         * Creates a new edge key.
+         *
+         * @param origin  the origin node of the edge
+         * @param arrival the arrival node of the edge
+         */
+        EdgeKey(Node origin, Node arrival) {
+            this.origin = origin;
+            this.arrival = arrival;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (!(o instanceof EdgeKey)) {
+                return false;
+            }
+            EdgeKey k = (EdgeKey) o;
+            return origin.equals(k.origin) && arrival.equals(k.arrival);
+        }
+
+        @Override
+        public int hashCode() {
+            return java.util.Objects.hash(origin, arrival);
+        }
     }
 }
