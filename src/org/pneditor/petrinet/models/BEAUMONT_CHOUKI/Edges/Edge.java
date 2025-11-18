@@ -1,4 +1,4 @@
-package io.github.leobeaumont.Edges;
+package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges;
 
 /**
  * Represents a directed connection between a {@code Place} and a {@code Transition}.

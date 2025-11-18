@@ -1,4 +1,4 @@
-package io.github.leobeaumont.Edges;
+package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges;
 
 import io.github.leobeaumont.Nodes.Place;
 import io.github.leobeaumont.Nodes.Transition;
