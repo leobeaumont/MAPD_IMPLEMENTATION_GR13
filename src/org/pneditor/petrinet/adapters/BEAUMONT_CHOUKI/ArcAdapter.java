@@ -1,9 +1,12 @@
 package org.pneditor.petrinet.adapters.BEAUMONT_CHOUKI;
 
+import java.util.Map;
 import org.pneditor.petrinet.AbstractArc;
 import org.pneditor.petrinet.AbstractNode;
 import org.pneditor.petrinet.ResetArcMultiplicityException;
 import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.Edge;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeIn;
+import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeOut;
 import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeEmpty;
 import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.EdgeZero;
 import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.WeightedEdgeIn;
@@ -16,24 +19,30 @@ import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.WeightedEdgeOut;
  */
 public class ArcAdapter extends AbstractArc {
 
-    private final AbstractNode source;
-    private final AbstractNode destination;
     private final Edge internalEdge;
+    private final Map<Object, AbstractNode> internalToAdapterNodeMap;
 
-    public ArcAdapter(AbstractNode source, AbstractNode destination, Edge internalEdge) {
-        this.source = source;
-        this.destination = destination;
+    public ArcAdapter(Edge internalEdge, Map<Object, AbstractNode> internalToAdapterNodeMap) {
         this.internalEdge = internalEdge;
+        this.internalToAdapterNodeMap = internalToAdapterNodeMap;
     }
 
     @Override
     public AbstractNode getSource() {
-        return this.source;
+        if (internalEdge instanceof EdgeIn) {
+            return internalToAdapterNodeMap.get(((EdgeIn) internalEdge).getOrigin());
+        } else { // EdgeOut
+            return internalToAdapterNodeMap.get(((EdgeOut) internalEdge).getOrigin());
+        }
     }
 
     @Override
     public AbstractNode getDestination() {
-        return this.destination;
+        if (internalEdge instanceof EdgeIn) {
+            return internalToAdapterNodeMap.get(((EdgeIn) internalEdge).getArrival());
+        } else { // EdgeOut
+            return internalToAdapterNodeMap.get(((EdgeOut) internalEdge).getArrival());
+        }
     }
 
     @Override
@@ -62,10 +71,7 @@ public class ArcAdapter extends AbstractArc {
         if (this.internalEdge instanceof WeightedEdgeOut) {
             return ((WeightedEdgeOut) this.internalEdge).getWeight();
         }
-        if (this.internalEdge instanceof EdgeEmpty) {
-            return 0; // In our implementation, inhibitory edges do not draw tokens from places.
-        }
-        return 1; // Other arcs have a weight of 1 by default.
+        return 1; // Inhibitory and Reset arcs have an implicit weight of 1.
     }
 
     @Override
@@ -78,6 +84,6 @@ public class ArcAdapter extends AbstractArc {
         } else if (this.internalEdge instanceof WeightedEdgeOut) {
             ((WeightedEdgeOut) this.internalEdge).setWeight(multiplicity);
         }
-        // For inhibitory arc, we do nothing as they don't have a settable weight in our model.
+        // For other arc types (inhibitory, reset), we do nothing as they don't have a settable weight in our model.
     }
 }
