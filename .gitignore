@@ -1,0 +1,44 @@
+# Required by the subject on moodle
+.classpath
+bin/
+
+# Maven target folder
+/target/
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Eclipse
+.settings/
+*.launch
+.project
+
+# IntelliJ IDEA
+*.iml
+.idea/
+out/
+
+# VS Code
+.vscode/
+
+# Mac OS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Maven Wrapper files
+.mvn/wrapper/maven-wrapper.jar
+
+# Temporary files
+*.tmp
+*.bak
+
+# Environment files
+.env
+
+# JetBrains IDEs
+*.iws

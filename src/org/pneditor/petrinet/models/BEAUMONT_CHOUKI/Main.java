@@ -83,8 +83,8 @@ public final class Main {
         net.addEdge(1, p1, t1); // consumes 1 token from p1
         net.addEdge(1, t1, p2); // produces 1 token to p2
         //net.addEdgeEmpty(p1, t1); // inhibitor edge from p1 to t1
-
-        net2.addEdge(1, p4, t3); // consumes 1 token from p1
+        
+        net2.addEdge(1, p4, t3); // consumes 1 token from p4
         net2.addEdge(1, t3, p3); // produces 1 token
         net2.addEdgeZero(p3, t4); // zero-type edge from p1 to t1
 
