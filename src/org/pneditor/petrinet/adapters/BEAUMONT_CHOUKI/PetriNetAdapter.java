@@ -63,72 +63,160 @@ public class PetriNetAdapter extends PetriNetInterface {
 
         // Create an adapter
         TransitionAdapter transitionAdapter = new TransitionAdapter("", internalTransition);
+
+        // Map them together
         adapterToInternalNode.put(transitionAdapter, internalTransition);
         internalToAdapterNode.put(internalTransition, transitionAdapter);
+
+        // Return the adapter
         return transitionAdapter;
     }
 
     @Override
     public AbstractArc addRegularArc(AbstractNode source, AbstractNode destination) throws UnimplementedCaseException {
-        // 1. Use the map to look up the internal objects.
+        // Get internal nodes.
         Object internalSource = adapterToInternalNode.get(source);
         Object internalDestination = adapterToInternalNode.get(destination);
 
-        // 2. Create the correct internal edge based on the types.
         if (internalSource instanceof Place && internalDestination instanceof Transition) {
+            // Create internal edge.
             WeightedEdgeIn internalEdge = new WeightedEdgeIn((Place) internalSource, (Transition) internalDestination, 1);
             petriNet.getEdges().add(internalEdge);
 
-            // 3. Create the adapter for the arc and populate the edge map.
+            // Create the adapter.
             ArcAdapter arcAdapter = new ArcAdapter(internalEdge, internalToAdapterNode);
+
+            // Map them together.
             adapterToInternalEdge.put(arcAdapter, internalEdge);
+
+            // Return the adapter.
             return arcAdapter;
         } else if (internalSource instanceof Transition && internalDestination instanceof Place) {
+            // Create internal edge.
             WeightedEdgeOut internalEdge = new WeightedEdgeOut((Transition) internalSource, (Place) internalDestination, 1);
             petriNet.getEdges().add(internalEdge);
 
+            // Create the adapter.
             ArcAdapter arcAdapter = new ArcAdapter(internalEdge, internalToAdapterNode);
+
+            // Map them together.
             adapterToInternalEdge.put(arcAdapter, internalEdge);
+
+            // Return the adapter.
             return arcAdapter;
         }
         throw new UnimplementedCaseException("Regular arc must be between a place and a transition.");
     }
 
     @Override
-    public AbstractArc addInhibitoryArc(AbstractPlace place, AbstractTransition transition) throws UnimplementedCaseException {
-        // We will implement this later.
-        throw new UnimplementedCaseException("addInhibitoryArc is not implemented yet.");
+    public AbstractArc addInhibitoryArc(AbstractPlace place, AbstractTransition transition) {
+        // Get internal place and transition.
+        Place internalPlace = (Place) adapterToInternalNode.get(place);
+        Transition internalTransition = (Transition) adapterToInternalNode.get(transition);
+
+        // Create internal edge.
+        EdgeZero internalEdge = new EdgeZero(internalPlace, internalTransition);
+
+        // Create an adapter.
+        ArcAdapter arcAdapter = new ArcAdapter(internalEdge, internalToAdapterNode);
+
+        // Map them together.
+        adapterToInternalEdge.put(arcAdapter, internalEdge);
+
+        // Return the adapter.
+        return arcAdapter;
     }
 
     @Override
-    public AbstractArc addResetArc(AbstractPlace place, AbstractTransition transition) throws UnimplementedCaseException {
-        // We will implement this later.
-        throw new UnimplementedCaseException("addResetArc is not implemented yet.");
+    public AbstractArc addResetArc(AbstractPlace place, AbstractTransition transition) {
+        // Get internal place and transition.
+        Place internalPlace = (Place) adapterToInternalNode.get(place);
+        Transition internalTransition = (Transition) adapterToInternalNode.get(transition);
+
+        // Create internal edge.
+        EdgeEmpty internalEdge = new EdgeEmpty(internalPlace, internalTransition);
+
+        // Create an adapter.
+        ArcAdapter arcAdapter = new ArcAdapter(internalEdge, internalToAdapterNode);
+
+        // Map them together.
+        adapterToInternalEdge.put(arcAdapter, internalEdge);
+
+        // Return the adapter.
+        return arcAdapter;
     }
 
     @Override
     public void removePlace(AbstractPlace place) {
-        // We will implement this later.
+        // Get internal place.
+        Place internalPlace = (Place) adapterToInternalNode.get(place);
+
+        if (internalPlace != null) {
+            // Remove all connected arcs.
+            for (AbstractArc arc : adapterToInternalEdge.keySet().toArray(new AbstractArc[0])) {
+                if (arc.getSource().equals(place) || arc.getDestination().equals(place)) {
+                    removeArc(arc);
+                }
+            }
+
+            // Remove place from the internal model.
+            petriNet.removePlace(internalPlace);
+
+            // Clean up the adapter's maps.
+            adapterToInternalNode.remove(place);
+            internalToAdapterNode.remove(internalPlace);
+        }
     }
 
     @Override
     public void removeTransition(AbstractTransition transition) {
-        // We will implement this later.
+        // Get internal transition.
+        Transition internalTransition = (Transition) adapterToInternalNode.get(transition);
+
+        if (internalTransition != null) {
+            // Remove transition from internal model.
+            petriNet.removeTransition(internalTransition);
+            
+            // Clear mappings
+            adapterToInternalNode.remove(transition);
+            internalToAdapterNode.remove(internalTransition);
+        }
     }
 
     @Override
     public void removeArc(AbstractArc arc) {
-        // We will implement this later.
+        // Get internal edge.
+        Edge internalEdge = adapterToInternalEdge.get(arc);
+
+        if (internalEdge != null) {
+            // Remove edge from internal model.
+            petriNet.removeEdge(internalEdge);
+
+            // Clean up the adapter's map.
+            adapterToInternalEdge.remove(arc);
+        }
     }
 
     @Override
     public boolean isEnabled(AbstractTransition transition) throws ResetArcMultiplicityException {
-        // We will implement this later.
-        return false;
+        // Get internal transition.
+        Transition internalTransition = (Transition) adapterToInternalNode.get(transition);
+
+        if (internalTransition != null) {
+            // Call to internal logic.
+            return internalTransition.isDrawable();
+        }
+        return false; // If the transition doesn't exist, it can't be enabled.
     }
 
     @Override
     public void fire(AbstractTransition transition) throws ResetArcMultiplicityException {
-        // We will implement this later.
+        // Get internal transition.
+        Transition internalTransition = (Transition) adapterToInternalNode.get(transition);
+
+        if (internalTransition != null) {
+            // Call to internal logic.
+            petriNet.stepSimulation(internalTransition);
+        }
     }
 }
