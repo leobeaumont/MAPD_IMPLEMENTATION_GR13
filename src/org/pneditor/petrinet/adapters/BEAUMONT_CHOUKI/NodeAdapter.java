@@ -1,4 +1,4 @@
-package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.adapters;
+package org.pneditor.petrinet.adapters.BEAUMONT_CHOUKI;
 
 import org.pneditor.petrinet.AbstractNode;
 import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Node;

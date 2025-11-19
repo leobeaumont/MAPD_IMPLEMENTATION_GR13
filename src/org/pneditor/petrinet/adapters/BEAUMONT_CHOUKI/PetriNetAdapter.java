@@ -25,11 +25,10 @@ import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Edges.WeightedEdgeOut;
  */
 public class PetriNetAdapter extends PetriNetInterface {
 
-    // A reference to your core Petri Net logic.
+    // A reference to the core Petri Net.
     private final PetriNet1 petriNet;
 
-    // Maps to keep track of the relationship between the UI's adapter objects
-    // and your internal model objects. This is crucial for translating calls.
+    // Maps to keep track of the relationship between the UI's adapter objects and internal model objects.
     private final Map<AbstractNode, Object> adapterToInternalNode = new HashMap<>();
     private final Map<Object, AbstractNode> internalToAdapterNode = new HashMap<>();
     private final Map<AbstractArc, Edge> adapterToInternalEdge = new HashMap<>();
@@ -41,26 +40,28 @@ public class PetriNetAdapter extends PetriNetInterface {
 
     @Override
     public AbstractPlace addPlace() {
-        // 1. Call your logic to create a place.
-        Place internalPlace = new Place(0); // Assuming new places start with 0 tokens.
+        // Create a place.
+        Place internalPlace = new Place(0);
         petriNet.getPlaces().add(internalPlace);
 
-        // 2. Create a UI-compatible adapter for it.
+        // Create an adapter for it.
         PlaceAdapter placeAdapter = new PlaceAdapter("", internalPlace);
 
-        // 3. Store the mapping.
+        // Map them together
         adapterToInternalNode.put(placeAdapter, internalPlace);
         internalToAdapterNode.put(internalPlace, placeAdapter);
 
-        // 4. Return the adapter to the UI.
+        // Return the adapter
         return placeAdapter;
     }
 
     @Override
     public AbstractTransition addTransition() {
-        // Same pattern as addPlace...
+        // Create a transition
         Transition internalTransition = new Transition();
         petriNet.getTransitions().add(internalTransition);
+
+        // Create an adapter
         TransitionAdapter transitionAdapter = new TransitionAdapter("", internalTransition);
         adapterToInternalNode.put(transitionAdapter, internalTransition);
         internalToAdapterNode.put(internalTransition, transitionAdapter);

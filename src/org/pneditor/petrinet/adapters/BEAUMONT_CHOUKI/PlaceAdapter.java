@@ -1,4 +1,4 @@
-package org.pneditor.petrinet.models.BEAUMONT_CHOUKI.adapters;
+package org.pneditor.petrinet.adapters.BEAUMONT_CHOUKI;
 
 import org.pneditor.petrinet.AbstractPlace;
 import org.pneditor.petrinet.models.BEAUMONT_CHOUKI.Nodes.Place;
@@ -25,7 +25,7 @@ public class PlaceAdapter extends AbstractPlace {
      * @param adaptee The place instance from the BEAUMONT_CHOUKI model to adapt.
      * @param label   The label to be used by the PNEditor {@code AbstractPlace}.
      */
-    public PlaceAdapter(final Place adaptee, final String label) {
+    public PlaceAdapter(final String label, final Place adaptee) {
         super(label);
         this.adaptee = adaptee;
     }
