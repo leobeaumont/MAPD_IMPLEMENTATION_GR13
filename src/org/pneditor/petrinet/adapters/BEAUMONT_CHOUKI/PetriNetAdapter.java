@@ -174,9 +174,16 @@ public class PetriNetAdapter extends PetriNetInterface {
         Transition internalTransition = (Transition) adapterToInternalNode.get(transition);
 
         if (internalTransition != null) {
+            // Remove all connected arcs.
+            for (AbstractArc arc : adapterToInternalEdge.keySet().toArray(new AbstractArc[0])) {
+                if (arc.getSource().equals(transition) || arc.getDestination().equals(transition)) {
+                    removeArc(arc);
+                }
+            }
+
             // Remove transition from internal model.
             petriNet.removeTransition(internalTransition);
-            
+
             // Clear mappings
             adapterToInternalNode.remove(transition);
             internalToAdapterNode.remove(internalTransition);
